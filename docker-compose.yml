@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  postgres:
+    # Docker image to use
+    image: postgres:13.5
+    restart: always
+    # environment variables
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+    # option used for persisting data in the host file system
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    # 'host_port:container_port'
+    ports:
+      - '5433:5432'
+
+volumes:
+  postgres:
