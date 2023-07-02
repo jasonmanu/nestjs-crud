@@ -38,7 +38,7 @@ export class ArticlesService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} article`;
+  async remove(id: number) {
+    return await this.prisma.article.delete({ where: { id } });
   }
 }
