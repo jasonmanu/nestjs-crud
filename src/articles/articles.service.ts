@@ -11,8 +11,8 @@ export class ArticlesService {
     return await this.prisma.article.findMany({ where: { published: false } });
   }
 
-  create(createArticleDto: CreateArticleDto) {
-    return 'This action adds a new article';
+  async create(createArticleDto: CreateArticleDto) {
+    return await this.prisma.article.create({ data: createArticleDto });
   }
 
   async findAll() {
