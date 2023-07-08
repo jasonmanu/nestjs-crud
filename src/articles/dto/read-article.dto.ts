@@ -1,7 +1,7 @@
 import { Article } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ArticleEntity implements Article {
+export class ReadArticleDto implements Article {
   @ApiProperty()
   id: number;
 

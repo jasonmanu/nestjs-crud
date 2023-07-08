@@ -20,7 +20,13 @@ export class ArticlesService {
   }
 
   async findOne(id: number) {
-    return await this.prisma.article.findUnique({ where: { id } });
+    const article = await this.prisma.article.findUnique({ where: { id } });
+
+    if (!article) {
+      throw new NotFoundException();
+    }
+
+    return article;
   }
 
   async update(id: number, updateArticleDto: UpdateArticleDto) {
