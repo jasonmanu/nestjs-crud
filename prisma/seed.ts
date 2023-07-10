@@ -1,28 +1,32 @@
 // prisma/seed.ts
 
 import { PrismaClient } from '@prisma/client';
+import * as brcypt from 'bcrypt';
 
 // initialize Prisma Client
 const prisma = new PrismaClient();
+const RoundsOfHashing = 10;
 
 async function main() {
+  const passwordSabin = await brcypt.hash('password-sabin', RoundsOfHashing);
   const user1 = await prisma.user.upsert({
     where: { email: 'sabin@adams.com' },
-    update: {},
+    update: { password: passwordSabin },
     create: {
       email: 'sabin@adams.com',
       name: 'Sabin Adams',
-      password: 'password-sabin',
+      password: passwordSabin,
     },
   });
 
+  const passwordAlex = await brcypt.hash('password-alex', RoundsOfHashing);
   const user2 = await prisma.user.upsert({
     where: { email: 'alex@ruheni.com' },
-    update: {},
+    update: { password: passwordAlex },
     create: {
       email: 'alex@ruheni.com',
       name: 'Alex Ruheni',
-      password: 'password-alex',
+      password: passwordAlex,
     },
   });
 

@@ -3,13 +3,23 @@ import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
+  private RoundsOfHashing = 10;
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({ data: createUserDto });
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      this.RoundsOfHashing,
+    );
+    createUserDto.password = hashedPassword;
+
+    return this.prisma.user.create({
+      data: createUserDto,
+    });
   }
 
   async findAll() {
@@ -34,6 +44,13 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.password) {
+      updateUserDto.password = await bcrypt.hash(
+        updateUserDto.password,
+        this.RoundsOfHashing,
+      );
+    }
+
     return this.prisma.user.update({
       where: { id },
       data: updateUserDto,
