@@ -16,11 +16,17 @@ export class ArticlesService {
   }
 
   async findAll() {
-    return await this.prisma.article.findMany({ where: { published: true } });
+    return await this.prisma.article.findMany({
+      where: { published: true },
+      include: { author: true },
+    });
   }
 
   async findOne(id: number) {
-    const article = await this.prisma.article.findUnique({ where: { id } });
+    const article = await this.prisma.article.findUnique({
+      where: { id },
+      include: { author: true },
+    });
 
     if (!article) {
       throw new NotFoundException();
@@ -30,7 +36,10 @@ export class ArticlesService {
   }
 
   async update(id: number, updateArticleDto: UpdateArticleDto) {
-    const article = await this.prisma.article.findUnique({ where: { id } });
+    const article = await this.prisma.article.findUnique({
+      where: { id },
+      include: { author: true },
+    });
 
     if (!article) {
       throw new NotFoundException();
@@ -45,6 +54,9 @@ export class ArticlesService {
   }
 
   async remove(id: number) {
-    return await this.prisma.article.delete({ where: { id } });
+    return await this.prisma.article.delete({
+      where: { id },
+      include: { author: true },
+    });
   }
 }

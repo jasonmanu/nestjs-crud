@@ -7,16 +7,25 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateArticleDto, ReadArticleDto, UpdateArticleDto } from './dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('articles')
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
   @ApiCreatedResponse({ type: ReadArticleDto })
   async create(@Body() createArticleDto: CreateArticleDto) {
@@ -29,6 +38,8 @@ export class ArticlesController {
     return await this.articlesService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get('drafts')
   @ApiOkResponse({ type: ReadArticleDto, isArray: true })
   async getDrafts() {
@@ -41,6 +52,8 @@ export class ArticlesController {
     return this.articlesService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch(':id')
   @ApiOkResponse({ type: ReadArticleDto })
   update(
@@ -50,6 +63,8 @@ export class ArticlesController {
     return this.articlesService.update(+id, updateArticleDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   @ApiOkResponse({ type: ReadArticleDto })
   async remove(@Param('id', ParseIntPipe) id: number) {
