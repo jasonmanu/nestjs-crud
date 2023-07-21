@@ -1,19 +1,29 @@
 version: '3.8'
 services:
-  postgres:
-    # Docker image to use
-    image: postgres:13.5
+  nest-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-api
     restart: always
-    # environment variables
-    environment:
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword
-    # option used for persisting data in the host file system
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    # 'host_port:container_port'
     ports:
-      - '5433:5432'
+      - '3000:3000'
+    depends_on:
+      - nest-postgres
+    env_file:
+      - .env
+
+  nest-postgres:
+    image: postgres:14
+    container_name: nest-postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env
+    volumes:
+      - nest-postgres:/var/lib/postgresql/data
 
 volumes:
-  postgres:
+  nest-postgres:
+    name: nest-postgres-db
