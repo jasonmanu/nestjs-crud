@@ -4,8 +4,12 @@ FROM node:16 AS builder
 WORKDIR /app
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
-COPY prisma ./prisma/
+# COPY package*.json ./
+# COPY prisma ./prisma/
+
+COPY ./prisma /app/prisma
+COPY ./package.json /app/package.json
+COPY ./package-lock.json /app/package-lock.json
 
 # Install app dependencies
 RUN npm ci
