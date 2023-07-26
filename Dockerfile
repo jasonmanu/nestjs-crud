@@ -4,11 +4,17 @@ FROM node:16 AS builder
 WORKDIR /app
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
-COPY prisma ./prisma/
+COPY package*.json /app/
+COPY ./prisma /app/prisma
 
 # Install app dependencies
 RUN npm install
+
+# Generate prisma client, leave out if generating in `postinstall` script
+# RUN npx prisma generate
+
+# Run Prisma migrations
+RUN npx prisma migrate deploy
 
 COPY . .
 
