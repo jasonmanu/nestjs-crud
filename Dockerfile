@@ -7,9 +7,8 @@ WORKDIR /app
 # COPY package*.json ./
 # COPY prisma ./prisma/
 
-COPY ./prisma /app/prisma
-COPY ./package.json /app/package.json
-COPY ./package-lock.json /app/package-lock.json
+COPY ./prisma /app
+COPY ./package*.json /app
 
 # Install app dependencies
 RUN npm ci
