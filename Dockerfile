@@ -16,7 +16,7 @@ COPY . .
 RUN npx prisma generate
 
 # Generate Prisma schema and run migrations
-RUN npx prisma migration deploy
+RUN npx prisma migrate deploy
 
 # Build the application
 RUN npm run build
