@@ -7,7 +7,7 @@ WORKDIR /app
 # COPY package*.json ./
 # COPY prisma ./prisma/
 
-COPY ./prisma /app
+COPY ./prisma /prisma
 COPY ./package*.json /app
 
 # Install app dependencies
