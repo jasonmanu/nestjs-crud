@@ -10,7 +10,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const config = new DocumentBuilder()
-    .setTitle('Median')
+    .setTitle('Median API')
     .setDescription('The Median API description')
     .setVersion('0.1')
     .addBearerAuth()
